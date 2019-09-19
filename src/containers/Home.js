@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { PageHeader, ListGroup, ListGroupItem, FormGroup, ControlLabel, FormControl, HelpBlock } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import "./Home.css";
 import { API } from "aws-amplify";
@@ -11,18 +11,16 @@ export default class Home extends Component {
 
     this.state = {
       isLoading: true,
-      notes: []
+      timeSlots: {},
+      children: [],
     };
   }
 
   async componentDidMount() {
-    if (!this.props.isAuthenticated) {
-      return;
-    }
-
     try {
-      const notes = await this.notes();
-      this.setState({ notes });
+      // 1. get time slots count
+      const timeSlots = await this.getTimeSlots();
+      this.setState({ timeSlots });
     } catch (e) {
       alert(e);
     }
@@ -30,67 +28,53 @@ export default class Home extends Component {
     this.setState({ isLoading: false });
   }
 
-  notes() {
-    return API.get("notes", "/notes");
+  getTimeSlots() {
+    return API.get("registration", "/timeSlotAvailability");
   }
 
-  renderNotesList(notes) {
-    return [{}].concat(notes).map(
-      (note, i) => i !== 0 ?
-        <LinkContainer
-          key={note.noteId}
-          to={`/notes/${note.noteId}`}
-        >
-          <ListGroupItem header={note.content.trim().split("\n")[0]}>
-            {"Created: " + new Date(note.createdAt).toLocaleString()}
-          </ListGroupItem>
-        </LinkContainer>
-        : <LinkContainer
-          key="new"
-          to="/notes/new"
-        >
-          <ListGroupItem>
-            <h4>
-              <b>{"\uFF0B"}</b> Create a new note
-            </h4>
-          </ListGroupItem>
-        </LinkContainer>
-    );
+  handleChange(event) {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
   }
 
-  renderLander() {
-    return (
-      <div className="lander">
-        <h1>Scratch</h1>
-        <p>A simple note taking app</p>
-        <div>
-          <Link to="/login" className="btn btn-info btn-lg">
-            Login
-          </Link>
-          <Link to="/signup" className="btn btn-success btn-lg">
-            Signup
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  handleSubmit() {
 
-
-  renderNotes() {
-    return (
-      <div className="notes">
-        <PageHeader>Your Notes</PageHeader>
-        <ListGroup>
-          {!this.state.isLoading && this.renderNotesList(this.state.notes)}
-        </ListGroup>
-      </div>
-    );
   }
 
   render() {
+    const { slot1, slot2 } = this.state.timeSlots;
     return (
       <div className={`Home ${this.props.className}`}>
-        {this.props.isAuthenticated ? this.renderNotes() : this.renderLander()}
+        <form onSubmit={this.handleSubmit}>
+          <FormGroup controlId="firstName" >
+            <FormControl
+              type="text"
+              value={this.state.value}
+              placeholder="First name"
+              onChange={this.handleChange}
+            />
+            <FormControl.Feedback />
+          </FormGroup>
+          <FormGroup controlId="lastName" >
+            <FormControl
+              type="text"
+              value={this.state.value}
+              placeholder="Last name"
+              onChange={this.handleChange}
+            />
+            <FormControl.Feedback />
+          </FormGroup>
+          <FormGroup controlId="age" >
+            <FormControl
+              type="text"
+              value={this.state.value}
+              placeholder="Age"
+              onChange={this.handleChange}
+            />
+            <FormControl.Feedback />
+          </FormGroup>
+        </form>
       </div>
     );
   }

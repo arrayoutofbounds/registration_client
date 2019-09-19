@@ -55,28 +55,21 @@ class App extends Component {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Scratch</Link>
+              <Link to="/">Kids Diwali 2019</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              {
-                this.state.isAuthenticated ?
                   <Fragment>
-                    <LinkContainer to="/settings">
-                      <NavItem>Settings</NavItem>
+                    <LinkContainer to="/agenda">
+                      <NavItem>Agenda</NavItem>
                     </LinkContainer>
-                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
                   </Fragment>
-                  :
+              {
+                this.state.isAuthenticated &&
                   <Fragment>
-                    <LinkContainer to="/signup">
-                      <NavItem>Signup</NavItem>
-                    </LinkContainer>
-                    <LinkContainer to="/login">
-                      <NavItem>Login</NavItem>
-                    </LinkContainer>
+                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
                   </Fragment>
               }
             </Nav>
