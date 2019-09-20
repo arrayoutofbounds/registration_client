@@ -69,6 +69,11 @@ class App extends Component {
               {
                 this.state.isAuthenticated &&
                   <Fragment>
+                    <NavItem>Confirm Registration</NavItem>
+                    <NavItem>Attendee Information</NavItem>
+                    <NavItem>Give Points</NavItem>
+                    <NavItem>Redeem Points</NavItem>
+                    <NavItem>Activity Attendance</NavItem>
                     <NavItem onClick={this.handleLogout}>Logout</NavItem>
                   </Fragment>
               }
