@@ -1,0 +1,19 @@
+.scanner{
+    margin: 0 auto;
+}
+
+.attendeeInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.attendeeKey {
+    margin-right: 5px;
+}
+
+.attendeeValue {
+    margin-left: 5px;
+}

@@ -61,21 +61,36 @@ class App extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-                  <Fragment>
-                    <LinkContainer to="/agenda">
-                      <NavItem>Agenda</NavItem>
-                    </LinkContainer>
-                  </Fragment>
+              <Fragment>
+                <LinkContainer to="/agenda">
+                  <NavItem>Agenda</NavItem>
+                </LinkContainer>
+              </Fragment>
               {
                 this.state.isAuthenticated &&
-                  <Fragment>
+                <Fragment>
+                  {/* <LinkContainer>
                     <NavItem>Confirm Registration</NavItem>
+                  </LinkContainer > */}
+
+                  <LinkContainer to="/attendeeInfo">
                     <NavItem>Attendee Information</NavItem>
+                  </LinkContainer>
+                  
+                  {/* <LinkContainer>
                     <NavItem>Give Points</NavItem>
+                  </LinkContainer>
+
+                  <LinkContainer>
                     <NavItem>Redeem Points</NavItem>
+                  </LinkContainer>
+
+                  <LinkContainer>
                     <NavItem>Activity Attendance</NavItem>
-                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                  </Fragment>
+                  </LinkContainer> */}
+
+                  <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                </Fragment>
               }
             </Nav>
           </Navbar.Collapse>
