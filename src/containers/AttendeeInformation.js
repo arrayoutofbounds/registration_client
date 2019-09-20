@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import QrReader from 'react-qr-reader';
-import { PageHeader } from 'react-bootstrap';
+import { PageHeader, Button} from 'react-bootstrap';
 import { API } from "aws-amplify";
 import './AttendeeInformation.css';
 
@@ -35,8 +35,7 @@ export default class AttendeeInformation extends Component {
     }
 
     renderAttendee = (attendee) => {
-        console.log(attendee)
-        return <div>
+        return <div style={{marginBottom: "10px"}}>
             <div className="attendeeInfo">
             <h4 className="attendeeKey">First Name:</h4> <p className="attendeeValue">{attendee.firstName}</p>
             </div>
@@ -99,6 +98,13 @@ export default class AttendeeInformation extends Component {
         </div>
     }
 
+    resetPage = () => {
+        this.setState({
+            attendee: ""
+        })
+        this.props.history.push("/attendeeInfo");
+    }
+
     render() {
         return (
             <div className={`AttendeeInformation ${this.props.className}`}>
@@ -106,7 +112,11 @@ export default class AttendeeInformation extends Component {
                     Attendee information
                 </PageHeader>
                 {
-                    this.state.attendee ? <div>{this.renderAttendee(this.state.attendee)}</div> :
+                    this.state.attendee ? <div>
+                        {this.renderAttendee(this.state.attendee)}
+                        <Button style={{cursor: "pointer"}} block bsSize="large" bsStyle="info" onClick={this.resetPage}>Reset</Button>
+                        </div> 
+                        :
                         <div className="scanner">
                             <QrReader
                                 delay={0}
@@ -117,7 +127,6 @@ export default class AttendeeInformation extends Component {
                             />
                         </div>
                 }
-                {/* <p>{this.state.attendee}</p> */}
             </div>
         );
     }

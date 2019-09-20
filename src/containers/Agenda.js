@@ -25,7 +25,7 @@ export default class Agenda extends Component {
                 <h1>
                     What does this event have?
                 </h1>
-                <p>
+                <div>
                     <ul>
                         <li>
                             Rides
@@ -43,7 +43,7 @@ export default class Agenda extends Component {
                             Food
                         </li>
                     </ul>
-                </p>
+                </div>
             
             <br />
 

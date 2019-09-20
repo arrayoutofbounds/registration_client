@@ -69,9 +69,9 @@ class App extends Component {
               {
                 this.state.isAuthenticated &&
                 <Fragment>
-                  {/* <LinkContainer>
+                  <LinkContainer to="/confirmRegistration">
                     <NavItem>Confirm Registration</NavItem>
-                  </LinkContainer > */}
+                  </LinkContainer >
 
                   <LinkContainer to="/attendeeInfo">
                     <NavItem>Attendee Information</NavItem>
