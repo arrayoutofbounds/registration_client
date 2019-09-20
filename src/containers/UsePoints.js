@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import QrReader from 'react-qr-reader';
-import { PageHeader, FormGroup, ControlLabel, Alert, FormControl } from 'react-bootstrap';
+import { PageHeader, FormGroup, ControlLabel, Alert, FormControl, Button } from 'react-bootstrap';
 import { API } from "aws-amplify";
 import './GivingPoints.css';
 import validator from 'validator';
@@ -13,6 +13,7 @@ export default class GivingPoints extends Component {
         this.state = {
             isLoading: false,
             attendee: "",
+            pointsAvailable: "",
             points: "",
             error: "",
         };
@@ -21,12 +22,19 @@ export default class GivingPoints extends Component {
     handleScan = async data => {
         if (data) {
             const parsedData = JSON.parse(data);
+            const id = parsedData.id;
+            const points = await this.getPoints(id);
             this.setState({
                 attendee: parsedData,
+                pointsAvailable: points.points
             });
         } else {
             console.log("No data found");
         }
+    }
+
+    getPoints = (id) => {
+        return API.get("registration", `/getPoints/${id}`);
     }
 
     handleError = err => {
@@ -34,28 +42,38 @@ export default class GivingPoints extends Component {
     }
 
     handleChange = (event) => {
-        const validationValue = validator.isInt(event.target.value) && parseInt(event.target.value) > 0;
+        const validationValue = validator.isInt(event.target.value) && parseInt(event.target.value) > 0 && (parseInt(event.target.value) <= this.state.pointsAvailable);
         if (!validationValue) {
             this.setState({
-                error: "Please enter a valid number and ensure its greater than 0",
+                error: "Please enter a number greater than 0 and less than available points",
                 points: ""
             })
             return;
         }
 
         this.setState({
-            points: parseInt(event.target.value)
+            points: parseInt(event.target.value) // you know that it can be converted to an integer
         })
     }
 
-    givePoints = () => {
+    usePoints = () => {
         const { id } = this.state.attendee;
-        const points = this.state.points;
-        return API.put("registration", `/givePoints/${id}`, {
+        const points = this.state.points; // you know its an integer by this point
+        return API.put("registration", `/redeemPoints/${id}`, {
             body: {
-                pointsGiven: points
+                pointsRedeemed: points
             }
         });
+    }
+
+    resetPage = () => {
+        this.setState({
+            attendee: "",
+            points: "",
+            error: "",
+            pointsAvailable: ""
+        })
+        this.props.history.push("/usePoints");
     }
 
     handleSubmit = async () => {
@@ -64,22 +82,28 @@ export default class GivingPoints extends Component {
         });
 
         try {
-            await this.givePoints();
-            this.props.history.push("/givingPoints");
+            await this.usePoints();
+            this.props.history.push("/usePoints");
         } catch (e) {
             console.log(e);
             this.setState({ isLoading: false });
         }
     }
 
+    validateForm = () => {
+        return parseInt(this.state.points) > 0 && (parseInt(this.state.points) <= this.state.pointsAvailable);
+    }
+
     render() {
+        console.log(this.state);
         return (
-            <div className={`GivingPoints ${this.props.className}`}>
+            <div className={`UsePoints ${this.props.className}`}>
                 <PageHeader>
-                    Giving Points
+                    Redeem Points
                 </PageHeader>
                 {
                     this.state.attendee ? <div>
+                        <h4>Points available to redeem: {this.state.pointsAvailable}</h4>
                         <form onSubmit={this.handleSubmit}>
                             <FormGroup controlId="points" >
                                 <ControlLabel>Points</ControlLabel>
@@ -95,12 +119,13 @@ export default class GivingPoints extends Component {
                                 block
                                 bsStyle="info"
                                 bsSize="large"
-                                disabled={!this.state.points > 0}
+                                disabled={!this.validateForm()}
                                 type="submit"
                                 isLoading={this.state.isLoading}
-                                text="Give Points"
-                                loadingText="giving points..."
+                                text="Redeem Points"
+                                loadingText="redeeming points..."
                             />
+                            <Button style={{cursor: "pointer"}} block bsSize="large" bsStyle="info" onClick={this.resetPage}>Reset</Button>
                         </form>
                     </div>
                         :
