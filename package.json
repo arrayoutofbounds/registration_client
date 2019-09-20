@@ -10,7 +10,8 @@
     "react-dom": "^16.9.0",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1"
+    "react-scripts": "3.1.1",
+    "validator": "^11.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -21,7 +22,9 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "resolutions": { "eslint-utils": "^1.4.1" },
+  "resolutions": {
+    "eslint-utils": "^1.4.1"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
