@@ -18,10 +18,10 @@ export default class ConfirmRegistration extends Component {
         if (data) {
             const parsedData = JSON.parse(data);
             const id = parsedData.id;
+            await this.confirmRegistration(id);
             this.setState({
                 attendee: parsedData
-            })
-            await this.confirmRegistration(id);
+            });
         } else {
             console.log("No data found");
         }

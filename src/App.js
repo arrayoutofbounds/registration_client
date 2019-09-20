@@ -77,11 +77,11 @@ class App extends Component {
                     <NavItem>Attendee Information</NavItem>
                   </LinkContainer>
                   
-                  {/* <LinkContainer>
+                  <LinkContainer to="/givingPoints">
                     <NavItem>Give Points</NavItem>
                   </LinkContainer>
 
-                  <LinkContainer>
+                  {/* <LinkContainer>
                     <NavItem>Redeem Points</NavItem>
                   </LinkContainer>
 
