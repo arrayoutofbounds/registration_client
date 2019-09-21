@@ -23,7 +23,6 @@ export default class AttendeeInformation extends Component {
                 attendee: attendee
             })
         } else {
-            console.log("No data found");
         }
     }
     handleError = err => {
@@ -35,6 +34,7 @@ export default class AttendeeInformation extends Component {
     }
 
     renderAttendee = (attendee) => {
+        console.log(this.state);
         return <div style={{marginBottom: "10px"}}>
             <div className="attendeeInfo">
             <h4 className="attendeeKey">First Name:</h4> <p className="attendeeValue">{attendee.firstName}</p>
@@ -65,7 +65,7 @@ export default class AttendeeInformation extends Component {
             </div>
 
             <div className="attendeeInfo">
-            <h4 className="attendeeKey">Has Registered</h4>: <p className="attendeeValue">{attendee.isRegistered}</p>
+            <h4 className="attendeeKey">Has Registered</h4>: <p className="attendeeValue">{attendee.isRegistered ? "Yes" : "No"}</p>
             </div>
 
             <div className="attendeeInfo">
@@ -100,9 +100,9 @@ export default class AttendeeInformation extends Component {
 
     resetPage = () => {
         this.setState({
-            attendee: ""
+            attendee: "",
+            isLoading: null
         })
-        this.props.history.push("/attendeeInfo");
     }
 
     render() {

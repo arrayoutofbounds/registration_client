@@ -14,6 +14,7 @@ import AttendeeInformation from "./containers/AttendeeInformation";
 import ConfirmRegistration from "./containers/ConfirmRegistration";
 import GivingPoints from './containers/GivingPoints';
 import UsePoints from './containers/UsePoints';
+import Activity from './containers/Activity';
 
 export default ({ childProps }) =>
   <Switch>
@@ -31,6 +32,7 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/confirmRegistration" exact component={ConfirmRegistration} props={childProps} />
     <AuthenticatedRoute path="/givingPoints" exact component={GivingPoints} props={childProps} />
     <AuthenticatedRoute path="/usePoints" exact component={UsePoints} props={childProps} />
+    <AuthenticatedRoute path="/activity" exact component={Activity} props={childProps} />
 
     { /* Finally, catch all unmatched routes */}
     <Route component={NotFound} />

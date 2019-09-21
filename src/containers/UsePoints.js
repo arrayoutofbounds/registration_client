@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import QrReader from 'react-qr-reader';
 import { PageHeader, FormGroup, ControlLabel, Alert, FormControl, Button } from 'react-bootstrap';
 import { API } from "aws-amplify";
-import './GivingPoints.css';
 import validator from 'validator';
 import LoaderButton from '../components/LoaderButton';
 
-export default class GivingPoints extends Component {
+export default class UsePoints extends Component {
     constructor(props) {
         super(props);
 
@@ -29,7 +28,6 @@ export default class GivingPoints extends Component {
                 pointsAvailable: points.points
             });
         } else {
-            console.log("No data found");
         }
     }
 
@@ -71,19 +69,26 @@ export default class GivingPoints extends Component {
             attendee: "",
             points: "",
             error: "",
-            pointsAvailable: ""
+            pointsAvailable: "",
+            isLoading: false,
         })
-        this.props.history.push("/usePoints");
     }
 
-    handleSubmit = async () => {
+    handleSubmit = async (event) => {
+        event.preventDefault();
         this.setState({
             isLoading: true
         });
 
         try {
             await this.usePoints();
-            this.props.history.push("/usePoints");
+            this.setState({
+                isLoading: false,
+                attendee: "",
+                pointsAvailable: "",
+                points: "",
+                error: ""
+            })
         } catch (e) {
             console.log(e);
             this.setState({ isLoading: false });
@@ -95,7 +100,6 @@ export default class GivingPoints extends Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <div className={`UsePoints ${this.props.className}`}>
                 <PageHeader>

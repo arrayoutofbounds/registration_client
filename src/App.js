@@ -85,9 +85,9 @@ class App extends Component {
                     <NavItem>Redeem Points</NavItem>
                   </LinkContainer>
 
-                  {/* <LinkContainer>
-                    <NavItem>Activity Attendance</NavItem>
-                  </LinkContainer> */}
+                  <LinkContainer to="/activity">
+                    <NavItem>Activity</NavItem>
+                  </LinkContainer>
 
                   <NavItem onClick={this.handleLogout}>Logout</NavItem>
                 </Fragment>

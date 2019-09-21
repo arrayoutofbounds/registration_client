@@ -23,7 +23,6 @@ export default class ConfirmRegistration extends Component {
                 attendee: parsedData
             });
         } else {
-            console.log("No data found");
         }
     }
 
@@ -37,9 +36,10 @@ export default class ConfirmRegistration extends Component {
 
     resetPage = () => {
         this.setState({
-            attendee: ""
-        })
-        this.props.history.push("/confirmRegistration");
+            attendee: "",
+            isLoading: null
+        });
+        // this.props.history.push("/confirmRegistration");
     }
 
     render() {

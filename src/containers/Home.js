@@ -5,7 +5,7 @@ import "./Home.css";
 import LoaderButton from "../components/LoaderButton";
 
 import React, { Component } from "react";
-import { PageHeader, FormGroup, FormControl, ControlLabel } from "react-bootstrap";;
+import { PageHeader, FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";;
 
 const MORNING = '10-1';
 const AFTERNOON = '1-4';
@@ -169,7 +169,9 @@ export default class Home extends Component {
     return true;
   }
 
-  handleSubmit = async () => {
+  handleSubmit = async event => {
+    event.preventDefault();
+
     this.setState({
       isLoading: true
     });
@@ -183,11 +185,21 @@ export default class Home extends Component {
 
     try {
       await this.createAttendee(attendee);
-      this.props.history.push("/");
+      this.setState({
+        registered: true
+      })
+      // this.props.history.push("/");
     } catch (e) {
       alert(e);
       this.setState({ isLoading: false });
     }
+  }
+
+  resetPage = () => {
+    this.setState({
+        registered: null,
+        isLoading: null
+    });
   }
 
   createAttendee(attendee) {
@@ -203,7 +215,17 @@ export default class Home extends Component {
         <PageHeader>
           Register
         </PageHeader>
-        <form onSubmit={this.handleSubmit}>
+        {
+          this.state.registered ?
+          <div>
+                        <div>
+                            <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+                            <h4 className="confirmMessage">You have been registered for the event!</h4>
+                        </div>
+                        <Button style={{cursor: "pointer"}} block bsSize="large" bsStyle="info" onClick={this.resetPage}>Go Back</Button>
+                    </div>
+          :
+          <form onSubmit={this.handleSubmit}>
 
           <FormGroup controlId="firstName">
             <ControlLabel>First Name</ControlLabel>
@@ -372,7 +394,7 @@ export default class Home extends Component {
           <br />
 
         </form>
-
+        }
         <br />
       </div>
     );

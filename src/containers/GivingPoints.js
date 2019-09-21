@@ -25,7 +25,6 @@ export default class GivingPoints extends Component {
                 attendee: parsedData,
             });
         } else {
-            console.log("No data found");
         }
     }
 
@@ -58,14 +57,21 @@ export default class GivingPoints extends Component {
         });
     }
 
-    handleSubmit = async () => {
+    handleSubmit = async (event) => {
+        event.preventDefault();
         this.setState({
             isLoading: true
         });
 
         try {
             await this.givePoints();
-            this.props.history.push("/givingPoints");
+            this.setState({
+                isLoading: false,
+                attendee: "",
+                points: "",
+                error: ""
+            })
+            // this.props.history.push("/givingPoints");
         } catch (e) {
             console.log(e);
             this.setState({ isLoading: false });
